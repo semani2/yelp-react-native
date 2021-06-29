@@ -26,7 +26,7 @@ export default () => {
     // Call searchApi when component is first rendered
     // Calls the enclosed method only once
     useEffect(() => {
-        searchApi('Indian');
+        searchApi('');
     }, []);
 
     return [searchApi, results, errorMessage];
