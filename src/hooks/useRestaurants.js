@@ -15,9 +15,6 @@ export default () => {
                 }
             });
             console.log(response.status);
-            response.data.businesses.forEach(business => {
-               console.log(business.name); 
-            });
             setResults(response.data.businesses);
         } catch (err) {
             console.log(err);
@@ -29,7 +26,7 @@ export default () => {
     // Call searchApi when component is first rendered
     // Calls the enclosed method only once
     useEffect(() => {
-        searchApi('Breakfast');
+        searchApi('Indian');
     }, []);
 
     return [searchApi, results, errorMessage];

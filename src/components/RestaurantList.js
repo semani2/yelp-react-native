@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
+import RestaurantItem from './RestaurantItem';
 
 const RestaurantList = ( {title, restaurants} ) => {
     return (
-        <View>
+        <View style={styles.containerStyle}>
             <Text style={styles.titleStyle}>{title}</Text>
             
             <FlatList 
@@ -12,9 +13,11 @@ const RestaurantList = ( {title, restaurants} ) => {
                 data={restaurants}
                 keyExtractor={restaurant => restaurant.id}
                 renderItem = {({item}) => {
-                    return <Text>{item.name}</Text>
+                    return <RestaurantItem restaurant={item}/>
                 }}
             />
+
+            <View style={styles.divStyle}/>
         </View>
     );
 }
@@ -22,7 +25,17 @@ const RestaurantList = ( {title, restaurants} ) => {
 const styles = StyleSheet.create({
     titleStyle: {
         fontSize: 20,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginStart: 15
+    },
+    containerStyle: {
+        marginTop: 15,
+    },
+    divStyle: { 
+        borderBottomColor: 'grey', 
+        borderBottomWidth: 0.5,
+        marginHorizontal: 15,
+        marginTop: 10
     }
 });
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, FlatList } from 'react-native'
 import SearchBar from '../components/SearchBar';
 import useRestaurants from '../hooks/useRestaurants';
 import RestaurantList from '../components/RestaurantList';
@@ -14,6 +14,24 @@ const SearchScreen = () => {
             return result.price === price;
         })
     }
+
+    const getRestaurantData = () => {
+        const data = [];
+        data.push({
+            title: 'Cost Effective',
+            restaurants: filterResultsByPrice('$')
+        });
+        data.push({
+            title: 'Bit Pricier',
+            restaurants: filterResultsByPrice('$$')
+        });
+        data.push({
+            title: 'Big Spender',
+            restaurants: filterResultsByPrice('$$$')
+        });
+
+        return data;
+    }
    
     return (
         <View 
@@ -23,19 +41,25 @@ const SearchScreen = () => {
                 onSearchTermChange={setSearchTerm}
                 onSearchSubmit={() => searchApi(searchTerm)}/>
 
-            <Text>We have found {results.length} results</Text>
-
             {errorMessage ? <Text>{errorMessage}</Text> : null}
 
-
-
-            <RestaurantList title="Cost Effective" restaurants={filterResultsByPrice("$")}/>
-            <RestaurantList title="Bit Pricier" restaurants={filterResultsByPrice("$$")}/>
-            <RestaurantList title="Big Spender" restaurants={filterResultsByPrice("$$$")}/>
+            <FlatList 
+                style={styles.listStyle}
+                data={getRestaurantData()}
+                keyExtractor={(item) => item.title}
+                renderItem={({item}) => {
+                    console.log(item);
+                    return <RestaurantList title={item.title} restaurants={item.restaurants}/>
+                }}
+            />
         </View>
     );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    listStyle: {
+        marginBottom: 15
+    }
+});
 
 export default SearchScreen;
