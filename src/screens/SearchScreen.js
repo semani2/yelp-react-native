@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, FlatList } from 'react-native'
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import SearchBar from '../components/SearchBar';
 import useRestaurants from '../hooks/useRestaurants';
 import RestaurantList from '../components/RestaurantList';
@@ -14,28 +14,10 @@ const SearchScreen = () => {
             return result.price === price;
         })
     }
-
-    const getRestaurantData = () => {
-        const data = [];
-        data.push({
-            title: 'Cost Effective',
-            restaurants: filterResultsByPrice('$')
-        });
-        data.push({
-            title: 'Bit Pricier',
-            restaurants: filterResultsByPrice('$$')
-        });
-        data.push({
-            title: 'Big Spender',
-            restaurants: filterResultsByPrice('$$$')
-        });
-
-        return data;
-    }
    
     return (
         <View 
-            style={{backgroundColor: 'white', ...StyleSheet.absoluteFillObject}}>
+            style={{backgroundColor: 'white', flex: 1}}>
             <SearchBar 
                 searchTerm={searchTerm} 
                 onSearchTermChange={setSearchTerm}
@@ -43,15 +25,12 @@ const SearchScreen = () => {
 
             {errorMessage ? <Text>{errorMessage}</Text> : null}
 
-            <FlatList 
-                style={styles.listStyle}
-                data={getRestaurantData()}
-                keyExtractor={(item) => item.title}
-                renderItem={({item}) => {
-                    console.log(item);
-                    return <RestaurantList title={item.title} restaurants={item.restaurants}/>
-                }}
-            />
+            <ScrollView style={{marginBottom: 10}}>
+                <RestaurantList title='Cost Effective' restaurants={filterResultsByPrice('$')} />
+                <RestaurantList title='Bit Pricier' restaurants={filterResultsByPrice('$$')} />
+                <RestaurantList title='Big Spender' restaurants={filterResultsByPrice('$$$')} />
+            </ScrollView>
+        
         </View>
     );
 };
